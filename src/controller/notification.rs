@@ -1,4 +1,4 @@
-use crate::model::notification::Notification;
+use crate::model::notification::{self, Notification};
 use crate::model::subscriber::SubscriberRequest;
 use crate::repository::notification::NotificationRepository;
 use crate::service::notification::NotificationService;
@@ -16,6 +16,14 @@ pub fn subscribe(product_type: &str) -> Result<Json<SubscriberRequest>> {
 #[get("/unsubscribe/<product_type>")]
 pub fn unsubscribe(product_type: &str) -> Result<Json<SubscriberRequest>> {
     return match NotificationService::unsubscribe(product_type) {
+        Ok(f) => Ok(Json::from(f)),
+        Err(e) => Err(e),
+    };
+}
+
+#[post("/recieve", data = "<notification>")]
+pub fn recieve(notification: Json<Notification>) -> Result<Json<Notification>> {
+    return match NotificationService::recieve_notification(notification.into_inner()) {
         Ok(f) => Ok(Json::from(f)),
         Err(e) => Err(e),
     };
