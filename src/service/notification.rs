@@ -49,4 +49,43 @@ impl NotificationService {
             .join()
             .unwrap();
     }
+
+    #[tokio::main]
+    async fn unsubscribe_request(product_type: String) -> Result<SubscriberRequest> {
+        let product_type_upper = product_type.to_uppercase();
+        let product_type_str = product_type_upper.as_str();
+        let notification_reciever_url = format!("{}/recieve", APP_CONFIG.get_instance_root_url());
+
+        let request_url = format!(
+            "{}/notification/unsubscribe/{}?url={}",
+            APP_CONFIG.get_instance_root_url(),
+            product_type_str,
+            notification_reciever_url
+        );
+        let request = REQWEST_CLIENT
+            .post(request_url.clone())
+            .header("Content-Type", "application/json")
+            .header("Accept", "application/json")
+            .send()
+            .await;
+        log::warn_!("Sent unsubscribe request to: {}", request_url);
+
+        return match request {
+            Ok(f) => match f.json::<SubscriberRequest>().await {
+                Ok(x) => Ok(x),
+                Err(_) => Err(compose_error_response(
+                    Status::NotAcceptable,
+                    String::from("Already unsubscribe from topic"),
+                )),
+            },
+            Err(e) => Err(compose_error_response(Status::NotFound, e.to_string())),
+        };
+    }
+
+    pub fn unsubscribe(product_type: &str) -> Result<SubscriberRequest> {
+        let product_type_clone = String::from(product_type);
+        return thread::spawn(move || Self::unsubscribe_request(product_type_clone))
+            .join()
+            .unwrap();
+    }
 }
