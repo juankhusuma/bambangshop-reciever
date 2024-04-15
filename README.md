@@ -68,16 +68,16 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Implement list_all_as_string function in Notification repository.`
     -   [x] Write answers of your learning module's "Reflection Subscriber-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
-    -   [ ] Commit: `Create Notification service struct skeleton.`
-    -   [ ] Commit: `Implement subscribe function in Notification service.`
-    -   [ ] Commit: `Implement subscribe function in Notification controller.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification service.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification controller.`
-    -   [ ] Commit: `Implement receive_notification function in Notification service.`
-    -   [ ] Commit: `Implement receive function in Notification controller.`
-    -   [ ] Commit: `Implement list_messages function in Notification service.`
-    -   [ ] Commit: `Implement list function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
+    -   [x] Commit: `Create Notification service struct skeleton.`
+    -   [x] Commit: `Implement subscribe function in Notification service.`
+    -   [x] Commit: `Implement subscribe function in Notification controller.`
+    -   [x] Commit: `Implement unsubscribe function in Notification service.`
+    -   [x] Commit: `Implement unsubscribe function in Notification controller.`
+    -   [x] Commit: `Implement receive_notification function in Notification service.`
+    -   [x] Commit: `Implement receive function in Notification controller.`
+    -   [x] Commit: `Implement list_messages function in Notification service.`
+    -   [x] Commit: `Implement list function in Notification controller.`
+    -   [x] Write answers of your learning module's "Reflection Subscriber-2" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -92,4 +92,11 @@ This is the place for you to write reflections:
 > Rust does not allow us to mutate the content of a static variable because it is not thread-safe. If we mutate the content of a static variable via a static function, it would be possible for multiple threads to access and modify the content of the static variable concurrently, which could lead to issues.
 
 #### Reflection Subscriber-2
+1. Have you explored things outside of the steps in the tutorial, for example: src/lib.rs? If not, explain why you did not do so. If yes, explain things that you have learned from those other parts of code.
+> Yes I have, from what I've explored, I learned that the src/lib.rs files contains usefull helper function that helps to load information from .env file and other function that helps in creating a custom error format. This file also contains the configurations for the Rocket app. I also have delve into some of the documentations relating to RwLock and DashMap to understand how they work. From what I've gathered from the documentation, RwLock is a reader-writer lock that allows a number of readers or at most one writer at any point in time. DashMap is a concurrent map that allows multiple readers and writers to access the map concurrently.
 
+2. Since you have completed the tutorial by now and have tried to test your notification system by spawning multiple instances of Receiver, explain how Observer pattern eases you to plug in more subscribers. How about spawning more than one instance of Main app, will it still be easy enough to add to the system?
+> The Observer pattern eases the process of plugging in more subscribers because it allows us to add new subscribers without modifying the publisher. This is because the publisher does not need to know the concrete classes of the subscribers, it only needs to know that the subscribers implement the Observer interface. This makes it easy to add new subscribers to the system. On the other hand, spawning more than one instance of the Main app would be more challenging and could cause some issues. For example if we have Publisher 1 and Publisher 2, and we have Subscriber 1 that is subscribed to Publisher 1 but not Publisher 2, we would need to make suer that when Publisher 2 state changes, Subscriber 1 also gets notified. This would require more complex logic and could lead to issues.
+
+3. Have you tried to make your own Tests, or enhance documentation on your Postman collection? If you have tried those features, tell us whether it is useful for your work (it can be your tutorial work or your Group Project).
+> I have added some tests to the Postman collection to test the endpoints that I have created. I used it to test multiple subscriptions to the publisher app, and to test the subscription system to listen to multiple product types. I found it useful to test the endpoints that I have created, as it allows me to see if the endpoints are working as expected and if the data is being returned correctly.

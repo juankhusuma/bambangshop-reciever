@@ -23,7 +23,7 @@ impl NotificationService {
         };
         let request_url = format!(
             "{}/notification/subscribe/{}",
-            APP_CONFIG.get_instance_root_url(),
+            APP_CONFIG.get_publisher_root_url(),
             product_type_str
         );
         let request = REQWEST_CLIENT
@@ -58,7 +58,7 @@ impl NotificationService {
 
         let request_url = format!(
             "{}/notification/unsubscribe/{}?url={}",
-            APP_CONFIG.get_instance_root_url(),
+            APP_CONFIG.get_publisher_root_url(),
             product_type_str,
             notification_reciever_url
         );
